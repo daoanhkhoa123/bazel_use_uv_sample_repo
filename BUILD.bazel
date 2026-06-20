@@ -1,0 +1,63 @@
+load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_library")
+
+"""Targets in the repository root"""
+
+load("@gazelle//:def.bzl", "gazelle")
+
+###############################################################################
+# Gazelle Directives
+###############################################################################
+
+# Instruct Gazelle to generate aspect_rules_py targets instead of rules_python
+# gazelle:map_kind py_binary py_binary @aspect_rules_py//py:defs.bzl
+# gazelle:map_kind py_library py_library @aspect_rules_py//py:defs.bzl
+# gazelle:map_kind py_test py_test @aspect_rules_py//py:defs.bzl
+# gazelle:exclude **/*.venv
+# The gazelle binary + `gazelle` runner target live in //tools/gazelle (the
+# default target for `aspect gazelle`). Run `aspect gazelle` to generate BUILDs.
+
+load("@aspect_rules_py//uv:defs.bzl", "gazelle_python_manifest")
+
+gazelle(
+    name = "gazelle",
+    env = {
+        "ENABLE_LANGUAGES": ",".join([
+            "starlark",
+            "python",
+        ]),
+    },
+    gazelle = "@multitool//tools/gazelle",
+)
+
+###############################################################################
+# Gazelle Directives
+###############################################################################
+
+gazelle_python_manifest(
+    name = "gazelle_python_manifest",
+    hub = "pypi",  # This tells Gazelle that this hub owns the packages
+    venvs = [
+        "original-bazel",
+        "vllm_deps",
+    ],  # Your target venv name
+)
+
+exports_files(
+    ["pyproject.toml"],
+    visibility = ["//:__subpackages__"],
+)
+
+###############################################################################
+# Incompatitable platform fix
+###############################################################################
+platform(
+    name = "x86_64_linux",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+    flags = [
+        "--@aspect_rules_py//uv/private/constraints/platform:platform_libc=glibc",
+        "--@aspect_rules_py//uv/private/constraints/platform:platform_version=2.39",
+    ],
+)

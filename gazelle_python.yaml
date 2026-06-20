@@ -1,0 +1,10 @@
+manifest:
+  modules_mapping:
+    81d243bd2c585b0f4821__mypyc: charset_normalizer
+    certifi: certifi
+    charset_normalizer: charset_normalizer
+    idna: idna
+    requests: requests
+    urllib3: urllib3
+  pip_repository:
+    name: pypi

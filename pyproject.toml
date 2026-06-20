@@ -1,0 +1,20 @@
+[project]
+name = "original-bazel"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+
+
+[dependency-groups]
+original-bazel = [
+    "requests",
+]
+vllm_deps = [
+]
+
+[tool.uv]
+default-groups = ["original-bazel", "vllm_deps"]
+environments = [
+    "sys_platform == 'linux'",
+]
