@@ -3,8 +3,11 @@ manifest:
     81d243bd2c585b0f4821__mypyc: charset_normalizer
     certifi: certifi
     charset_normalizer: charset_normalizer
+    df204bca18f2fa0f34a2__mypyc: tomli
     idna: idna
+    numpy: numpy
     requests: requests
+    tomli: tomli
     urllib3: urllib3
   pip_repository:
     name: pypi

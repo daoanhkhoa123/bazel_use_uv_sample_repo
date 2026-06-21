@@ -5,10 +5,20 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 
+dependencies = [
+    # This installs tomli ONLY if the user runs Python lower than 3.11
+    "tomli>=2.0.1; python_version < '3.11'",
+]
 
 [dependency-groups]
 original-bazel = [
+    "numpy",
     "requests",
 ]
 vllm_deps = [
+]
+
+[tool.uv]
+environments = [
+    "sys_platform == 'linux'",
 ]
