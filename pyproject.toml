@@ -12,9 +12,3 @@ original-bazel = [
 ]
 vllm_deps = [
 ]
-
-[tool.uv]
-default-groups = ["original-bazel", "vllm_deps"]
-environments = [
-    "sys_platform == 'linux'",
-]

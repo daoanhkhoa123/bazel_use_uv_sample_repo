@@ -5,9 +5,16 @@ import %workspace%/bazel/preset.bazelrc
 # See https://aspect.build/blog/configuring-bazels-downloader
 common --downloader_config=bazel/downloader.cfg
 
+# Fix build with dep group as default as main
 # # https://chatgpt.com/share/6a361a0f-8fcc-83ec-bd7c-347f8b6a0e4b
 # build --@aspect_rules_py//uv/private/constraints/dep_group:dep_group=original_bazel
 build --@pypi//dep_group=original-bazel
+
+# Fix excev 2
+# rules_python is working to enable this default to avoid dependency on a system interpreter
+# See https://github.com/bazel-contrib/rules_python/issues/3187
+# NB: some tools run py_binary targets even if the user didn't select to add Python to their project
+common --@rules_python//python/config_settings:bootstrap_impl=script
 
 # Load settings & overrides specific to the current user from `user.bazelrc`.
 # That file is git-ignored so settings aren't shared with team members. This is

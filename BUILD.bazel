@@ -46,18 +46,3 @@ exports_files(
     ["pyproject.toml"],
     visibility = ["//:__subpackages__"],
 )
-
-###############################################################################
-# Incompatitable platform fix
-###############################################################################
-platform(
-    name = "x86_64_linux",
-    constraint_values = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-    ],
-    flags = [
-        "--@aspect_rules_py//uv/private/constraints/platform:platform_libc=glibc",
-        "--@aspect_rules_py//uv/private/constraints/platform:platform_version=2.39",
-    ],
-)
