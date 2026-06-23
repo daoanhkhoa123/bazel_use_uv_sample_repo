@@ -1,14 +1,12 @@
 load("@rules_python//python:defs.bzl", "py_binary")
 
 py_binary(
-    name = "sample_code1_bin",
+    name = "sample_code2_bin",
     srcs = ["__main__.py"],
     main = "__main__.py",
     visibility = ["//:__subpackages__"],
     deps = [
-        "@pypi//matplotlib",
         "@pypi//numpy",
-        "@pypi//opencv_python",
-        "@pypi//torch",
+        "@pypi//requests",
     ],
 )

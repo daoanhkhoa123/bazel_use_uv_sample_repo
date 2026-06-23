@@ -10,8 +10,13 @@ common --downloader_config=bazel/downloader.cfg
 # build --@aspect_rules_py//uv/private/constraints/dep_group:dep_group=original_bazel
 build --@pypi//dep_group=original-bazel
 
-# Fix excev 2
-# rules_python is working to enable this default to avoid dependency on a system interpreter
+# Pinning CUDA architecture NVIDIA Blackwell RTX PRO 4000
+build --cxxopt="--cuda-gpu-arch=compute_100"
+build --cxxopt="--gpu-code=sm_100"
+
+# Parallel bazel compiling
+build --jobs=auto
+
 # See https://github.com/bazel-contrib/rules_python/issues/3187
 # NB: some tools run py_binary targets even if the user didn't select to add Python to their project
 common --@rules_python//python/config_settings:bootstrap_impl=script
