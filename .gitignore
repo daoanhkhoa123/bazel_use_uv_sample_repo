@@ -12,3 +12,4 @@ user.bazelrc
 
 
 
+third_party/wheels/*

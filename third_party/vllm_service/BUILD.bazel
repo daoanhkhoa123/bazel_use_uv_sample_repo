@@ -1,0 +1,12 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
+sh_binary(
+    name = "run_vllm_service",
+    srcs = ["run_vllm_service.sh"],
+    data = [
+        "pyproject.toml",
+        "requirements.txt",
+        "uv.lock",
+        "@uv",  # depending on how you imported uv
+    ],
+)

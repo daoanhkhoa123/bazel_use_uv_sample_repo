@@ -3,12 +3,42 @@ name = "original-bazel"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.11" # otherwise it will just try for every python possible, can torch will use python 3.12
 
+dependencies = [
+    # This installs tomli ONLY if the user runs Python lower than 3.11
+    "tomli>=2.0.1; python_version < '3.11'",
+]
 
 [dependency-groups]
 original-bazel = [
+    "numpy",
     "requests",
+    "opencv-python",
+    "matplotlib",
+    "pillow",
+    "torch",
+    "torchvision"
 ]
+
 vllm_deps = [
+]
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu130" },
+]
+torchvision = [
+    { index = "pytorch-cu130" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+
+[tool.uv]
+environments = [
+    "sys_platform == 'linux'",
 ]

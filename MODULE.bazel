@@ -8,13 +8,25 @@ bazel_dep(name = "rules_multitool", version = "1.11.1")
 ##############################################################################
 
 bazel_dep(name = "aspect_rules_py", version = "2.0.0-alpha.1")
-interpreters = use_extension("@aspect_rules_py//py:extensions.bzl", "python_interpreters")
-interpreters.toolchain(
-    python_version = "3.10", 
+# git_override(
+#     module_name = "aspect_rules_py",
+#     remote = "https://github.com/daoanhkhoa123/rules_py",
+#     commit = "ce3630ab9c79674ce9fd6f63e69188f97a5ecf36"
+# )
+
+# aspect rule py is ass so that it ccan not even register python interpreter
+# So i had to use this one insteadg
+bazel_dep(name = "rules_python", version = "2.0.2")
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    python_version = "3.10",
     is_default = True,
 )
-use_repo(interpreters, "python_interpreters")
-register_toolchains("@python_interpreters//:all")
+# Custom python interpreters for torch compile
+python.toolchain(
+    python_version = "3.12",
+    is_default = False,
+)
 
 uv_bin = use_extension("@aspect_rules_py//uv:extensions.bzl", "uv_bin")
 uv_bin.toolchain(
@@ -40,17 +52,30 @@ uv_bin.toolchain(
     )
 use_repo(uv_bin, "uv")
 
+
 uv = use_extension("@aspect_rules_py//uv:extensions.bzl", "uv")
 uv.declare_hub(
     hub_name = "pypi",
 )
 uv.project(
     hub_name = "pypi",
+    default_build_dependencies = [
+        "build",
+        "setuptools",
+        "maturin",
+    ],
     lock = "//:uv.lock",
     pyproject = "//:pyproject.toml",
 )
 
 use_repo(uv, "pypi")
+
+###############################################################################
+# Hermetic Shell files
+##############################################################################
+
+bazel_dep(name = "rules_shell", version = "0.8.0")
+
 
 
 ###############################################################################
@@ -60,8 +85,8 @@ bazel_dep(name = "gazelle", version = "0.51.3")
 # Required by "@aspect_rules_py//uv:defs.bzl", "gazelle_python_manifest"
 bazel_dep(name = "platforms", version = "1.1.0")
 # It means that this line is required even if we do not use rules_python anywhere
-bazel_dep(name = "rules_python", version = "2.0.2")
-bazel_dep(name = "rules_shell", version = "0.6.1")
+
+
 bazel_dep(name = "rules_oci", version = "2.2.7")
 bazel_dep(name = "tar.bzl", version = "0.10.5")
 bazel_dep(name = "bazel_env.bzl", version = "0.7.2")

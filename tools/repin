@@ -1,30 +1,33 @@
 #!/usr/bin/env bash
 
-# # After adding or upgrading a third-party dependency, run this script to
-# # regenerate the language lockfiles. Also run once after `aspect init` to
-# # materialize the placeholder lockfiles the template ships with.
-# set -o errexit -o nounset -o pipefail
+# After adding or upgrading a third-party dependency, run this script to
+# regenerate the language lockfiles. Also run once after `aspect init` to
+# materialize the placeholder lockfiles the template ships with.
 
-# cd "$(dirname "$0")/.."
-
-# If fails, then stop, ut keep the terminal open so that the output is visible
+# If fails, then stop, but keep the terminal open so that the output is visible
 set -o errexit -o nounset -o pipefail
 
 trap 'echo "Script failed. Press Enter to close..."; read' ERR
 
+cd "$(dirname "$0")/.."
 
-# Regenerate the curated bazelrc preset (bazelrc-preset.bzl). Keeps
-# bazel/preset.bazelrc in sync so //bazel:preset.update_test passes.
+echo "1. Updating uv.lock file..."
+uv lock 
+
+echo "2. Updating bazelrc preset..."
+# Regenerate the curated bazelrc preset (bazelrc-preset.bzl)
 bazel run //bazel:preset.update
 
-# Python: regenerate uv.lock from pyproject.toml (uv reads pyproject + lock).
-bazel run @uv -- lock
-
+echo "3. Updating Gazelle Python manifest..."
 # Regenerate the Gazelle Python manifest mapping file
 bazel run //:gazelle_python_manifest.update
 
+echo "4. Syncing MODULE.bazel.lock..."
 # Accept any resulting MODULE.bazel.lock changes.
 bazel mod deps --lockfile_mode=update
 
+echo "5. Running Gazelle to update BUILD files..."
 # Automatically run gazelle to update BUILD files
 bazel run //:gazelle
+
+echo "Repin completed successfully!"

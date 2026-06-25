@@ -1,10 +1,45 @@
 manifest:
   modules_mapping:
     81d243bd2c585b0f4821__mypyc: charset_normalizer
+    PIL: pillow
     certifi: certifi
     charset_normalizer: charset_normalizer
+    contourpy: contourpy
+    cuda.bindings: cuda_bindings
+    cuda.pathfinder: cuda_pathfinder
+    cv2: opencv_python
+    cycler: cycler
+    dateutil: python_dateutil
+    filelock: filelock
+    fontTools: fonttools
+    fsspec: fsspec
+    functorch: torch
     idna: idna
+    isympy: sympy
+    jinja2: jinja2
+    kiwisolver: kiwisolver
+    markupsafe: markupsafe
+    matplotlib: matplotlib
+    mpl_toolkits: matplotlib
+    mpmath: mpmath
+    networkx: networkx
+    numpy: numpy
+    nvidia: nvidia_cuda_cupti
+    opencv_python: opencv_python
+    packaging: packaging
+    pkg_resources: setuptools
+    pylab: matplotlib
+    pyparsing: pyparsing
     requests: requests
+    setuptools: setuptools
+    six: six
+    sympy: sympy
+    tomli: tomli
+    torch: torch
+    torchgen: torch
+    torchvision: torchvision
+    triton: triton
+    typing_extensions: typing_extensions
     urllib3: urllib3
   pip_repository:
     name: pypi
